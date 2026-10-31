@@ -1,0 +1,9 @@
+{
+  "name": "Last Light · Festival Rescue",
+  "short_name": "Last Light",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090c14",
+  "theme_color": "#090c14",
+  "description": "A cooperative multiplayer festival rescue mystery for 2–6 players."
+}
