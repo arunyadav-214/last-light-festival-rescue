@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#090c14" />
+  <meta name="description" content="Last Light: Festival Rescue — a real-time cooperative multiplayer mystery for 2–6 players." />
+  <title>Last Light · Festival Rescue</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Last Light home">
+      <span class="brand-mark">✦</span>
+      <span><strong>LAST LIGHT</strong><small>Festival Rescue</small></span>
+    </a>
+    <div class="header-status">
+      <span id="connectionPill" class="pill muted">Offline</span>
+      <button id="soundBtn" class="icon-btn" type="button" title="Toggle sound" aria-label="Toggle sound">♪</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="landingView" class="view active">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">COOPERATIVE MULTIPLAYER · 2–6 PLAYERS</p>
+          <h1>Save the festival<br><span>before the last light fades.</span></h1>
+          <p class="lede">Five districts have gone dark. Every player holds a different clue. Share what you know, solve each district together, and relight the city before midnight.</p>
+          <div class="hero-tags"><span>Private clues</span><span>Shared notes</span><span>Live timer</span><span>Room codes</span></div>
+        </div>
+        <div class="entry-card glass">
+          <div class="entry-tabs" role="tablist">
+            <button id="hostTab" class="tab active" type="button">Start an expedition</button>
+            <button id="joinTab" class="tab" type="button">Join your friends</button>
+          </div>
+          <form id="hostForm" class="entry-form active">
+            <label>Your name<input id="hostName" maxlength="18" autocomplete="nickname" placeholder="Arun" required /></label>
+            <label>Room code<input id="hostRoom" maxlength="6" autocomplete="off" placeholder="Auto-generated" /></label>
+            <button class="primary-btn" type="submit">Create room <span>→</span></button>
+            <p class="fine-print">You will be the host. Keep this tab open while everyone plays.</p>
+          </form>
+          <form id="joinForm" class="entry-form">
+            <label>Your name<input id="joinName" maxlength="18" autocomplete="nickname" placeholder="Player name" required /></label>
+            <label>Room code<input id="joinRoom" maxlength="6" autocomplete="off" placeholder="ABC123" required /></label>
+            <button class="primary-btn" type="submit">Join room <span>→</span></button>
+            <p class="fine-print">Open the invite link from your host or enter the six-character room code.</p>
+          </form>
+          <div id="entryError" class="error-box" hidden></div>
+        </div>
+      </div>
+      <div class="district-strip" aria-label="Festival districts">
+        <article><span>01</span><strong>Lantern Market</strong><small>Recover the ember word.</small></article>
+        <article><span>02</span><strong>River Stage</strong><small>Restore the signal rhythm.</small></article>
+        <article><span>03</span><strong>Clocktower Lane</strong><small>Reset the frozen hour.</small></article>
+        <article><span>04</span><strong>Old Station</strong><small>Unlock the relay cabinet.</small></article>
+        <article><span>05</span><strong>Beacon Hill</strong><small>Bring back the final light.</small></article>
+      </div>
+    </section>
+
+    <section id="lobbyView" class="view">
+      <div class="room-topline">
+        <div><p class="eyebrow">EXPEDITION LOBBY</p><h2>Room <button id="roomCodeBtn" class="code-button" title="Copy room code">------</button></h2></div>
+        <div class="room-actions"><button id="copyInviteBtn" class="secondary-btn" type="button">Copy invite</button><button id="leaveBtn" class="secondary-btn danger" type="button">Leave</button></div>
+      </div>
+      <div class="lobby-grid">
+        <section class="glass panel">
+          <div class="panel-heading"><div><p class="eyebrow">CREW</p><h3>Players</h3></div><span id="playerCount">0 / 6</span></div>
+          <div id="playerList" class="player-list"></div>
+          <div id="hostControls" class="host-controls" hidden><button id="startGameBtn" class="primary-btn" type="button" disabled>Begin rescue <span>→</span></button><p id="startHint" class="fine-print">At least two players are required.</p></div>
+          <div id="guestControls" class="guest-controls" hidden><button id="readyBtn" class="primary-btn" type="button">I’m ready</button><p class="fine-print">The host will begin when everyone is ready.</p></div>
+        </section>
+        <section class="glass panel briefing">
+          <p class="eyebrow">MISSION BRIEFING</p><h3>The blackout was not an accident.</h3>
+          <p>At 11:42 PM, every festival circuit failed in sequence. Five emergency lanterns can bring the city back, but each district was locked behind a different puzzle.</p>
+          <p>Each player receives <strong>private information</strong>. No one can solve the rescue alone. Talk to each other, write useful facts in the shared notebook, and submit one answer per district.</p>
+          <div class="brief-rule"><span>18:00</span><p><strong>Time limit</strong><br>Restore all five districts before the countdown ends.</p></div>
+          <div class="brief-rule"><span>✦</span><p><strong>One crew, different clues</strong><br>Your private clue changes as the expedition moves through the city.</p></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="gameView" class="view">
+      <div class="game-header"><div><p class="eyebrow">LIVE EXPEDITION · ROOM <span id="gameRoomCode">------</span></p><h2 id="districtTitle">Lantern Market</h2></div><div id="timer" class="timer">18:00</div></div>
+      <div class="progress-track" id="progressTrack"></div>
+      <div class="game-grid">
+        <section class="glass panel mission-panel">
+          <div class="district-number" id="districtNumber">DISTRICT 01</div><h3 id="challengeTitle">Recover the ember word</h3><p id="challengeStory" class="challenge-story"></p><div id="challengePrompt" class="challenge-prompt"></div>
+          <form id="answerForm" class="answer-form"><input id="answerInput" maxlength="40" autocomplete="off" placeholder="Enter the crew’s answer" /><button class="primary-btn" type="submit">Submit answer</button></form>
+          <div id="answerFeedback" class="feedback" hidden></div>
+        </section>
+        <aside class="game-side">
+          <section class="glass panel private-panel"><div class="panel-heading"><div><p class="eyebrow">FOR YOUR EYES ONLY</p><h3>Private clue</h3></div><span class="lock">PRIVATE</span></div><p id="privateClue" class="private-clue">Waiting for your clue…</p><p class="fine-print">Tell your teammates what you think matters. They cannot see this card.</p></section>
+          <section class="glass panel notes-panel"><div class="panel-heading"><div><p class="eyebrow">SHARED</p><h3>Crew notebook</h3></div><span id="noteCount">0 notes</span></div><div id="notesList" class="notes-list"></div><form id="noteForm" class="note-form"><input id="noteInput" maxlength="120" autocomplete="off" placeholder="Add a useful clue…" required /><button type="submit" class="icon-btn" aria-label="Add note">＋</button></form></section>
+        </aside>
+      </div>
+      <div class="crew-bar"><div id="crewMini" class="crew-mini"></div><span id="syncText">Synced</span></div>
+    </section>
+
+    <section id="endView" class="view">
+      <div class="ending-card glass"><div id="endingIcon" class="ending-icon">✦</div><p id="endingEyebrow" class="eyebrow">FESTIVAL RESTORED</p><h2 id="endingTitle">The last light is shining again.</h2><p id="endingText">You restored all five districts before midnight.</p><div class="ending-stats"><div><strong id="finalTime">00:00</strong><span>time remaining</span></div><div><strong id="finalPlayers">0</strong><span>rescuers</span></div><div><strong id="finalNotes">0</strong><span>shared notes</span></div></div><div class="ending-actions"><button id="replayBtn" class="primary-btn" type="button">Play again</button><button id="homeBtn" class="secondary-btn" type="button">Return home</button></div></div>
+    </section>
+  </main>
+  <footer><span>Last Light · Festival Rescue</span><span>Host-powered peer-to-peer multiplayer</span></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="game-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
